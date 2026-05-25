@@ -22,12 +22,8 @@ export function useImagePreloader(frameCount: number, pathPrefix: string, pathSu
       const paddedIndex = i.toString().padStart(3, '0');
       img.src = `${pathPrefix}${paddedIndex}${pathSuffix}`;
       
-      // Decode image off the main thread to prevent jank when it's first drawn
-      img.decode().then(() => {
-        handleImageLoad();
-      }).catch(() => {
-        handleImageLoad(); // Fallback
-      });
+      img.onload = handleImageLoad;
+      img.onerror = handleImageLoad;
       
       images.push(img);
     }
