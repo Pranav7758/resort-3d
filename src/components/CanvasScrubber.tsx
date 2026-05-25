@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useCallback } from 'react';
-import { motion, MotionValue, useMotionValueEvent, useTransform } from 'framer-motion';
+import { MotionValue, useMotionValueEvent } from 'framer-motion';
 
 interface CanvasScrubberProps {
   images: HTMLImageElement[];
