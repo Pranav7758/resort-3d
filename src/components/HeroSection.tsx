@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { useScroll, motion, useTransform } from "framer-motion";
+import { useScroll, motion, useTransform, useSpring } from "framer-motion";
 import CanvasScrubber from "./CanvasScrubber";
 
 interface HeroSectionProps {
@@ -16,9 +16,15 @@ export default function HeroSection({ images }: HeroSectionProps) {
     offset: ["start start", "end end"],
   });
 
-  // We are already using Lenis for smooth scrolling, so we don't need useSpring 
-  // on top of it. Double smoothing causes massive lag and rubber-banding.
-  const progress = scrollYProgress;
+  // Apply a tight spring to the scroll progress. This is the secret to making 
+  // the image sequence feel like a smooth 60fps video instead of a jittery flipbook,
+  // especially for users with stepped mouse wheels.
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 150,
+    damping: 25,
+    mass: 0.1,
+    restDelta: 0.001
+  });
 
   // Narrative text fades during the transition
   const opacity1 = useTransform(progress, [0.05, 0.12, 0.25, 0.35], [0, 1, 1, 0]);

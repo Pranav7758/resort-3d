@@ -8,151 +8,125 @@ interface NavbarProps {
 }
 
 export default function Navbar({ onBookNow }: NavbarProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 60);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [isOpen]);
+
   const navLinks = [
-    { label: "About", href: "#about" },
     { label: "Villas", href: "#villas" },
     { label: "Amenities", href: "#amenities" },
-    { label: "Dining", href: "#dining" },
-    { label: "Spa", href: "#spa" },
+    { label: "Gallery", href: "#gallery" },
   ];
 
   return (
     <>
-      <motion.nav
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ${
-          isScrolled || isMobileMenuOpen
-            ? "bg-stark-white/95 backdrop-blur-xl text-deep-dark shadow-[0_1px_0_rgba(0,0,0,0.04)]"
-            : "bg-transparent text-stark-white"
-        }`}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
+      {/* ─── Glassmorphic Floating Pill ─── */}
+      <motion.header
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="fixed top-0 left-0 right-0 z-[100] flex justify-center px-4 pt-5 md:pt-6"
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-8 h-20 flex items-center justify-between">
-          {/* Brand */}
-          <a href="#" className="flex flex-col items-start z-50">
-            <span className="font-serif text-xl tracking-ultra-wide font-semibold leading-tight">
-              AZURE HAVEN
-            </span>
-            <span
-              className={`text-[8px] tracking-[0.4em] uppercase transition-colors duration-700 ${
-                isScrolled || isMobileMenuOpen ? "text-turquoise-600" : "text-turquoise-400"
-              }`}
-            >
-              Resort &amp; Spa
-            </span>
+        <div
+          className={`flex items-center justify-between gap-2 md:gap-4 w-full max-w-3xl transition-all duration-700 rounded-full px-4 md:px-6 ${
+            isScrolled
+              ? "py-3 bg-deep-dark/70 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+              : "py-3 bg-white/[0.04] backdrop-blur-xl border border-white/[0.06]"
+          }`}
+        >
+          {/* Logo */}
+          <a
+            href="#"
+            className="hover-target font-serif text-base md:text-lg tracking-[0.15em] text-stark-white uppercase font-light pl-2"
+          >
+            Azure<span className="text-turquoise-400">.</span>
           </a>
 
-          {/* Desktop Nav Links */}
-          <div className="hidden lg:flex gap-8 font-sans text-[11px] tracking-[0.2em] uppercase font-medium">
+          {/* Desktop Links inside the pill */}
+          <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                className={`relative py-1 transition-colors duration-300 hover:text-turquoise-500 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:transition-all after:duration-300 hover:after:w-full ${
-                  isScrolled ? "after:bg-turquoise-600" : "after:bg-turquoise-400"
-                }`}
+                className="hover-target font-sans text-[10px] tracking-[0.12em] uppercase text-white/50 hover:text-stark-white transition-colors duration-300 px-4 py-2 rounded-full hover:bg-white/[0.06]"
               >
                 {link.label}
               </a>
             ))}
-          </div>
+          </nav>
 
-          <div className="flex items-center gap-4 z-50">
-            {/* CTA */}
+          {/* Right controls */}
+          <div className="flex items-center gap-2">
             <button
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                onBookNow();
-              }}
-              className={`group relative px-5 md:px-7 py-2 md:py-2.5 font-sans text-[9px] md:text-[10px] tracking-[0.25em] uppercase font-semibold overflow-hidden transition-all duration-500 ${
-                isScrolled || isMobileMenuOpen
-                  ? "border border-deep-dark/20 text-deep-dark hover:text-stark-white"
-                  : "border border-white/30 text-stark-white hover:text-deep-dark"
-              }`}
+              onClick={onBookNow}
+              className="hover-target hidden md:inline-flex font-sans text-[10px] tracking-[0.15em] uppercase bg-turquoise-500 text-deep-dark px-5 py-2 rounded-full hover:bg-turquoise-400 transition-colors duration-300 font-medium"
             >
-              <span
-                className={`absolute inset-0 transition-transform duration-500 origin-left scale-x-0 group-hover:scale-x-100 ${
-                  isScrolled || isMobileMenuOpen ? "bg-deep-dark" : "bg-stark-white"
-                }`}
-              />
-              <span className="relative z-10">Reserve</span>
+              Reserve
             </button>
 
-            {/* Mobile Hamburger */}
+            {/* Hamburger */}
             <button
-              className="lg:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={() => setIsOpen(!isOpen)}
+              className="hover-target md:hidden w-10 h-10 rounded-full flex flex-col items-center justify-center gap-[4px] hover:bg-white/[0.06] transition-colors duration-300"
+              aria-label="Menu"
             >
-              <span
-                className={`block w-6 h-[1px] transition-transform duration-300 ${
-                  isScrolled || isMobileMenuOpen ? "bg-deep-dark" : "bg-stark-white"
-                } ${isMobileMenuOpen ? "rotate-45 translate-y-[7px]" : ""}`}
-              />
-              <span
-                className={`block w-6 h-[1px] transition-opacity duration-300 ${
-                  isScrolled || isMobileMenuOpen ? "bg-deep-dark" : "bg-stark-white"
-                } ${isMobileMenuOpen ? "opacity-0" : "opacity-100"}`}
-              />
-              <span
-                className={`block w-6 h-[1px] transition-transform duration-300 ${
-                  isScrolled || isMobileMenuOpen ? "bg-deep-dark" : "bg-stark-white"
-                } ${isMobileMenuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`}
-              />
+              <span className={`block w-4 h-[1.5px] bg-stark-white transition-all duration-400 ${isOpen ? "rotate-45 translate-y-[2.75px]" : ""}`} />
+              <span className={`block w-4 h-[1.5px] bg-stark-white transition-all duration-400 ${isOpen ? "-rotate-45 -translate-y-[2.75px]" : ""}`} />
             </button>
           </div>
         </div>
-      </motion.nav>
+      </motion.header>
 
-      {/* Mobile Menu Overlay */}
+      {/* ─── Mobile Menu Overlay ─── */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-40 bg-stark-white flex flex-col justify-center items-center pt-20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="fixed inset-0 z-[95] bg-deep-dark/95 backdrop-blur-3xl flex flex-col justify-center px-8 md:hidden"
           >
-            <div className="flex flex-col gap-8 text-center">
+            <div className="flex flex-col gap-6">
               {navLinks.map((link, i) => (
-                <motion.a
-                  key={link.label}
-                  href={link.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1, duration: 0.5 }}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-serif text-4xl text-deep-dark hover:text-turquoise-500 transition-colors"
-                >
-                  {link.label}
-                </motion.a>
+                <div key={link.label} className="overflow-hidden">
+                  <motion.a
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    initial={{ y: "100%", opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: "-50%", opacity: 0, transition: { duration: 0.25 } }}
+                    transition={{ duration: 0.7, delay: 0.15 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+                    className="hover-target block font-serif text-5xl text-stark-white hover:text-turquoise-400 transition-colors duration-300 py-3 border-b border-white/5"
+                  >
+                    {link.label}
+                  </motion.a>
+                </div>
               ))}
             </div>
-            
-            <motion.div 
+
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="absolute bottom-12 flex flex-col items-center gap-4"
+              transition={{ delay: 0.6, duration: 0.5 }}
+              className="mt-12"
             >
-              <div className="w-12 h-[1px] bg-deep-dark/10" />
-              <div className="flex gap-6 font-sans text-[10px] tracking-[0.2em] uppercase text-deep-dark/60">
-                <a href="#" className="hover:text-turquoise-500 transition-colors">Insta</a>
-                <a href="#" className="hover:text-turquoise-500 transition-colors">Fb</a>
-                <a href="#" className="hover:text-turquoise-500 transition-colors">X</a>
-              </div>
+              <button
+                onClick={() => { setIsOpen(false); onBookNow(); }}
+                className="hover-target font-sans text-[10px] tracking-[0.2em] uppercase bg-turquoise-500 text-deep-dark px-10 py-4 rounded-full font-medium"
+              >
+                Reserve Now
+              </button>
             </motion.div>
           </motion.div>
         )}

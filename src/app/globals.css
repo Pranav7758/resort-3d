@@ -29,6 +29,12 @@ body {
   overflow-x: hidden;
 }
 
+@media (pointer: fine) {
+  body, a, button, [role="button"], input, textarea, select {
+    cursor: none !important;
+  }
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
