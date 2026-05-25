@@ -52,7 +52,7 @@ export default function TestimonialsSection() {
         <div className="relative min-h-[250px] flex items-center justify-center">
           {/* Decorative large quote mark */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-8 font-serif text-[150px] text-deep-dark/5 select-none leading-none">
-            "
+            &quot;
           </div>
 
           <AnimatePresence mode="wait">

@@ -36,7 +36,7 @@ export default function ParallaxDivider() {
         className="relative z-10 text-center px-6 max-w-4xl"
       >
         <p className="font-serif text-3xl md:text-5xl text-stark-white italic font-light leading-relaxed">
-          "A place where time stands still, and every moment is an invitation to experience the extraordinary."
+          &quot;A place where time stands still, and every moment is an invitation to experience the extraordinary.&quot;
         </p>
       </motion.div>
     </section>

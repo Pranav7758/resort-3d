@@ -35,16 +35,8 @@ const villas = [
 ];
 
 export default function VillaShowcase() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-
   return (
-    <section ref={containerRef} id="villas" className="relative py-32 bg-stark-white overflow-hidden">
+    <section id="villas" className="relative py-32 bg-stark-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -24,7 +23,7 @@ export default function Footer() {
               </span>
             </a>
             <p className="font-sans text-xs text-sand-200/50 leading-relaxed max-w-xs">
-              Where the horizon meets luxury. An exclusive sanctuary crafted for the world's most discerning travelers.
+              Where the horizon meets luxury. An exclusive sanctuary crafted for the world&apos;s most discerning travelers.
             </p>
           </div>
 

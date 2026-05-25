@@ -14,25 +14,6 @@ export default function CanvasScrubber({ images, progress }: CanvasScrubberProps
   const currentProgressRef = useRef(0);
   const sizeRef = useRef({ width: 0, height: 0 });
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const observer = new ResizeObserver((entries) => {
-      if (entries[0]) {
-        sizeRef.current = {
-          width: entries[0].contentRect.width,
-          height: entries[0].contentRect.height
-        };
-        if (rafRef.current) cancelAnimationFrame(rafRef.current);
-        rafRef.current = requestAnimationFrame(drawFrame);
-      }
-    });
-
-    observer.observe(canvas);
-    return () => observer.disconnect();
-  }, []);
-
   const drawFrame = useCallback(() => {
     if (!images || images.length === 0) return;
 
@@ -80,6 +61,25 @@ export default function CanvasScrubber({ images, progress }: CanvasScrubberProps
 
     ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
   }, [images]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const observer = new ResizeObserver((entries) => {
+      if (entries[0]) {
+        sizeRef.current = {
+          width: entries[0].contentRect.width,
+          height: entries[0].contentRect.height
+        };
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        rafRef.current = requestAnimationFrame(drawFrame);
+      }
+    });
+
+    observer.observe(canvas);
+    return () => observer.disconnect();
+  }, [drawFrame]);
 
   useMotionValueEvent(progress, "change", (latest) => {
     currentProgressRef.current = latest;
