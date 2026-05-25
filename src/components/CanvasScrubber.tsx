@@ -24,7 +24,7 @@ export default function CanvasScrubber({ images, progress }: CanvasScrubberProps
     if (!ctx) return;
 
     // Render at native resolution (DPR capped to 1 to avoid retina overhead)
-    const dpr = 1; 
+    const dpr = 1;
     const rect = sizeRef.current;
     if (rect.width === 0 || rect.height === 0) return;
 
@@ -93,8 +93,6 @@ export default function CanvasScrubber({ images, progress }: CanvasScrubberProps
     }
   }, [images, drawFrame]);
 
-  const overlayOpacity = useTransform(progress, [0, 0.01], [1, 0]);
-
   return (
     <div className="relative w-full h-full">
       <canvas
@@ -102,14 +100,6 @@ export default function CanvasScrubber({ images, progress }: CanvasScrubberProps
         className="absolute inset-0 w-full h-full"
         style={{ display: 'block', transform: 'translateZ(0)', willChange: 'transform' }}
       />
-      {images && images.length > 0 && (
-        <motion.img
-          src={images[0].src}
-          alt="Azure Haven Resort"
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-          style={{ opacity: overlayOpacity }}
-        />
-      )}
     </div>
   );
 }

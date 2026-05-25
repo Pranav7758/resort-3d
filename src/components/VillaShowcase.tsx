@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 
 const villas = [
   {
@@ -71,12 +70,12 @@ export default function VillaShowcase() {
               className="flex-shrink-0 w-[85vw] md:w-[400px] snap-center group cursor-pointer"
             >
               <div className="relative h-[500px] md:h-[600px] overflow-hidden mb-6">
-                <motion.div 
+                <motion.div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110"
                   style={{ backgroundImage: `url(${villa.image})` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-deep-dark/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-                
+
                 <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
                   <div className="text-stark-white">
                     <p className="font-sans text-[9px] tracking-[0.2em] uppercase text-turquoise-400 mb-2">
@@ -86,7 +85,7 @@ export default function VillaShowcase() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="px-2">
                 <p className="font-sans text-sm text-deep-dark/70 mb-4 line-clamp-2">
                   {villa.description}
