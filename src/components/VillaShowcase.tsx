@@ -49,6 +49,9 @@ export default function VillaShowcase() {
   // Move the entire track horizontally. 
   // With 4 items (each 100vw), track is 400vw. We need to translate by -75% of the track width to reach the end.
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
+  
+  // The image slowly moves opposite to the scroll direction to create depth
+  const imageX = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
 
   return (
     <section ref={targetRef} id="villas" className="relative h-[400vh] bg-deep-dark">
@@ -75,8 +78,7 @@ export default function VillaShowcase() {
                     className="absolute inset-0 w-[120%] h-full bg-cover bg-center"
                     style={{ 
                       backgroundImage: `url(${villa.image})`,
-                      // The image slowly moves opposite to the scroll direction to create depth
-                      x: useTransform(scrollYProgress, [0, 1], ["0%", "-20%"])
+                      x: imageX
                     }}
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700" />
@@ -93,7 +95,7 @@ export default function VillaShowcase() {
                 <div className="relative w-full lg:w-[40%] flex flex-col justify-center z-10">
                   <div className="overflow-hidden mb-4">
                     <span className="font-sans text-[10px] tracking-[0.4em] uppercase text-turquoise-400">
-                      0{index + 1} // Sanctuary
+                      0{index + 1} {"//"} Sanctuary
                     </span>
                   </div>
                   
